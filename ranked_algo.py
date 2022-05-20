@@ -31,21 +31,31 @@ conn = snowflake.connector.connect(
 cur = conn.cursor()
 conn.cursor().execute("USE ROLE ETL")
 
-# # get ranked_polls from GovAlpha/DUX
-# url = "https://governance-portal-v2.vercel.app/api/polling/all-polls"
-# r = requests.get(url)
-# res = r.json()
-# polls = res['polls']
+# get ranked_polls from GovAlpha/DUX
+url = "https://governance-portal-v2.vercel.app/api/polling/all-polls"
+r = requests.get(url)
+res = r.json()
+polls = res['polls']
 
-# ranked_polls = []
-# for poll in polls:
-#     if poll['voteType'] == 'Ranked Choice IRV':
-#         ranked_polls.append(str(poll['pollId']))
+ranked_polls = []
+for poll in polls:
+    if poll['voteType'] == 'Ranked Choice IRV':
+        ranked_polls.append(str(poll['pollId']))
 
-ranked_polls = ['735', '705', '691', '609', '574', '510', '501', '502', '497', '498', '463', '465', '379', '380', '373', '328', '325', '323', '303', '285', '295', '297', '281', '279', '273', '258', '249', '248', '244', '240', '241', '219', '217', '218', '215', '206', '207', '194', '186', '165']
-ranked_polls = ['691']
+# ranked_polls = ['735', '705', '691', '609', '574', '510', '501', '502', '497', '498', '463', '465', '379', '380', '373', '328', '325', '323', '303', '285', '295', '297', '281', '279', '273', '258', '249', '248', '244', '240', '241', '219', '217', '218', '215', '206', '207', '194', '186', '165']
+# ranked_polls = ['691']
 
-ranked_polls_lookup = ','.join([f"'{poll}'" for poll in ranked_polls])
+"""
+    RANKED POLL VOTES FLOW
+"""
+
+option = st.selectbox(
+     'PICK THE POLL',
+     ranked_polls)
+
+st.write('SELECTED POLL:', option)
+
+# ranked_polls_lookup = ','.join([f"'{poll}'" for poll in ranked_polls])
 # print(ranked_polls_lookup)
 
 # Get options forom yays table
@@ -53,14 +63,11 @@ polls_metadata = cur.execute(f"""
     select code, parse_json(options)::string as options
     from mcd.internal.yays
     where type = 'poll'
-    and code in ({ranked_polls_lookup});
+    and code in ('{option}');
 """).fetchall()
 
 
 for code, options in polls_metadata:
-    """
-    RANKED POLL VOTES FLOW: POLL 691
-    """
 
     # get total voting power of voters that took part in the poll
     total_votes_weight = cur.execute(f"""
