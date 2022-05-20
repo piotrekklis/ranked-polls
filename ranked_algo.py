@@ -59,7 +59,7 @@ polls_metadata = cur.execute(f"""
 
 for code, options in polls_metadata:
     """
-    RANKED POLLS VOTES FLOW
+    RANKED POLL VOTES FLOW: POLL 691
     """
 
     # get total voting power of voters that took part in the poll
@@ -191,31 +191,29 @@ for code, options in polls_metadata:
             poll_algo_rounds.append(i)
 
 # VIZ
-# fig = px.parallel_categories(
-#     df1[['power'] + poll_algo_rounds],
-#     dimensions=poll_algo_rounds,
-#     color="power",
-#     color_continuous_scale=px.colors.sequential.Inferno,
-# )
+fig = px.parallel_categories(
+    df1[['power'] + poll_algo_rounds],
+    dimensions=poll_algo_rounds,
+    color="power",
+    color_continuous_scale=px.colors.sequential.Inferno,
+)
 
-# st.plotly_chart(fig)
+# dims = list()
+# for dim in poll_algo_rounds:
+#     dims.append(go.parcats.Dimension(values=df1[dim], label=dim))
 
-dims = list()
-for dim in poll_algo_rounds:
-    dims.append(go.parcats.Dimension(values=df1[dim], label=dim))
+# # Create parcats trace
+# color = df1.power
 
-# Create parcats trace
-color = df1.power
-
-fig = go.Figure(
-    data = [go.Parcats(
-        dimensions=dims,
-        line={'color': color, 'colorscale': px.colors.sequential.Inferno},
-        hoveron='color', hoverinfo='count',
-        labelfont={'size': 18, 'family': 'Times'},
-        tickfont={'size': 16, 'family': 'Times'},
-        arrangement='freeform')]
-    )
+# fig = go.Figure(
+#     data = [go.Parcats(
+#         dimensions=dims,
+#         line={'color': color, 'colorscale': px.colors.sequential.Inferno},
+#         hoveron='color', hoverinfo='count',
+#         labelfont={'size': 18, 'family': 'Times'},
+#         tickfont={'size': 16, 'family': 'Times'},
+#         arrangement='freeform')]
+#     )
 
 fig.update_layout(
     autosize=False,
