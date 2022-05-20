@@ -59,7 +59,7 @@ polls_metadata = cur.execute(f"""
 
 for code, options in polls_metadata:
     """
-    General overwiev of voters behaviour
+    RANKED POLLS VOTES FLOW
     """
 
     # get total voting power of voters that took part in the poll
