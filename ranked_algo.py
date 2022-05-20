@@ -222,17 +222,17 @@ fig = px.parallel_categories(
 #         arrangement='freeform')]
 #     )
 
-fig.update_layout(
-    autosize=False,
-    width=1800,
-    height=1000,
-    margin=dict(
-        l=250,
-        r=250,
-        b=250,
-        t=250,
-        pad=100
-    )
-)
+# fig.update_layout(
+#     autosize=False,
+#     width=1800,
+#     height=1000,
+#     margin=dict(
+#         l=250,
+#         r=250,
+#         b=250,
+#         t=250,
+#         pad=100
+#     )
+# )
 
 st.plotly_chart(fig)
